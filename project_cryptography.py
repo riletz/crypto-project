@@ -11,43 +11,62 @@ def vigenere_decrypt_cipher(c: str, keyword: str) -> str:
     count = 0
     m = ''
 
-    for x in c:
-        test = x - keyword[count]
-
-        if test < 'A':
-            m-= test + 26
-        else:
-            m-= test
-
-        count += 1
-
+    while count <= (len(c) - 1):
+            for x in keyword:
+                if count > (len(c) - 1):
+                    break
+                difference = ord(x) - ord('A')
+                #print(chr(test))
+                test = ord(c[count]) - difference
+                if test < 65:
+                    m += chr(test + 26)
+                else:
+                    m += chr(test)
+                count += 1
     return m
 
 def vigenere_encrypt_message(m: str, keyword: str) -> str:
     # TODO: Write the necessary code to create a Vigenere cipher (c) of the message (m) using the provided keyword
     count = 0
     c = ''
-
-    for x in m:
-        test = x + keyword[count]
-
-        if test > 'Z':
-            c += test - 26
-        else:
-            c+= test
-
-        count += 1
+    
+    m = m.upper()
+    
+    while count <= (len(m) - 1):
+        
+        for x in keyword:
+            if count > (len(m) - 1):
+                break
+            difference = ord(x) - ord('A')
+            test = ord(m[count]) + difference
+            #print(chr(test))
+            char = m[count]
+            while (char.isalpha == False or char == " ") and count != len(m):
+                count +=1
+                char = m[count]
+                test = ord(m[count]) + difference
+                
+            if test > 90:
+                c += chr(test - 26)
+            else:
+                c+= chr(test)
+            count += 1
     
     return c
 
 def vigenere_dictionary_attack(c: str) -> str:
     # TODO: Write the necessary code to get the message (m) from the cipher (c)
     m = ''
-
+    
     for x in DICTIONARY:
+        count = 0
         m = vigenere_decrypt_cipher(c, x)
-        if m is in DICTIONARY:
-            return m
+        for y in DICTIONARY:
+            if count > 2:
+                return m
+            if y in m:
+                count += 1
+            
 
 def rsa_decrypt_cipher(n: int, d: int, c: int) -> int:
     m = 0
