@@ -93,24 +93,24 @@ def rsa_calculate_private_key(e: int, p: int, q: int) -> int:
 def rsa_factor_64_bit_key() -> typing.Dict[str, typing.Dict[str, int]]:
     return {
         'test_1': {
-            'p': 0,
-            'q': 1
+            'p': 972429361,
+            'q': 980746589
         },
         'test_2': {
-            'p': 0,
-            'q': 1
+            'p': 968051891,
+            'q': 974839991
         },
         'test_3': {
-            'p': 0,
-            'q': 1
+            'p': 970871753,
+            'q': 978452509
         },
         'test_4': {
-            'p': 0,
-            'q': 1
+            'p': 968383249,
+            'q': 968565061
         },
         'test_5': {
-            'p': 0,
-            'q': 1
+            'p': 966227369,
+            'q': 967693901
         }
     }
 
