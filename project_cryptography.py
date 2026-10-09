@@ -8,18 +8,46 @@ import string
 
 def vigenere_decrypt_cipher(c: str, keyword: str) -> str:
     # TODO: Write the necessary code to get the message (m) from the cipher (c) using the keyword
+    count = 0
     m = ''
+
+    for x in c:
+        test = x - keyword[count]
+
+        if test < 'A':
+            m-= test + 26
+        else:
+            m-= test
+
+        count += 1
+
     return m
 
 def vigenere_encrypt_message(m: str, keyword: str) -> str:
     # TODO: Write the necessary code to create a Vigenere cipher (c) of the message (m) using the provided keyword
+    count = 0
     c = ''
+
+    for x in m:
+        test = x + keyword[count]
+
+        if test > 'Z':
+            c += test - 26
+        else:
+            c+= test
+
+        count += 1
+    
     return c
 
 def vigenere_dictionary_attack(c: str) -> str:
     # TODO: Write the necessary code to get the message (m) from the cipher (c)
     m = ''
-    return m
+
+    for x in DICTIONARY:
+        m = vigenere_decrypt_cipher(c, x)
+        if m is in DICTIONARY:
+            return m
 
 def rsa_decrypt_cipher(n: int, d: int, c: int) -> int:
     m = 0
