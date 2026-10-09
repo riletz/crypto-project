@@ -82,10 +82,12 @@ def rsa_encrypt_message(m: int, e: int, n: int) -> int:
 
 def rsa_calculate_private_key(e: int, p: int, q: int) -> int:
     d = 0
-
+    # ed = 1 mod (p-1)(q-1)
+    #https://www.cs.sjsu.edu/~stamp/CS265/SecurityEngineering/chapter5_SE/RSAmath.html
     # TODO: Write the necessary code to get the private key d from
     # the public exponent e and the factors p and q
-
+    n = (p-1)*(q-1)
+    d = pow(e, -1, n)
     return d
 
 def rsa_factor_64_bit_key() -> typing.Dict[str, typing.Dict[str, int]]:
