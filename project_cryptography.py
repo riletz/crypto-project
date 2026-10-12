@@ -118,9 +118,19 @@ def rsa_weak_key_attack(given_public_key_N: int, given_public_key_e: int, public
     # TODO: Write the necessary code to retrieve the private key d from the given public
     # key (N, e) using only the list of public keys generated using the same flawed RNG
     d = 0
+    getcontext().prec = 350
 
-    return d
-
+    for y in public_key_list: 
+        p = math.gcd(given_public_key_N, y)
+        if p != 1:
+            n = Decimal(given_public_key_N)
+            p = Decimal(p)
+            q = n / p
+            #if math.gcd(p, q) == 1:
+            n = (p-1)*(q-1)
+            d = pow(given_public_key_e, -1, int(n))
+            return d
+    
 def rsa_broadcast_attack(N_1: int, c_1: int, N_2: int, c_2: int, N_3: int, c_3: int) -> int:
     # TODO: Write the necessary code to retrieve the decrypted message (m) using three different
     # ciphers (c_1, c_2, and c_3) created using three different public key N's (N_1, N_2, and N_3)
