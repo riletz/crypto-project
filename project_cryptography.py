@@ -134,9 +134,34 @@ def rsa_weak_key_attack(given_public_key_N: int, given_public_key_e: int, public
 def rsa_broadcast_attack(N_1: int, c_1: int, N_2: int, c_2: int, N_3: int, c_3: int) -> int:
     # TODO: Write the necessary code to retrieve the decrypted message (m) using three different
     # ciphers (c_1, c_2, and c_3) created using three different public key N's (N_1, N_2, and N_3)
+    #https://math.umd.edu/~immortal/MATH406/lecturenotes/ch8-Additional.pdf
+    #https://www.geeksforgeeks.org/maths/chinese-remainder-theorem/
     m = 0
 
-    return m
+    getcontext().prec = 1000 
+
+    c_1 = Decimal(c_1)
+    c_2 = Decimal(c_2)
+    c_3 = Decimal(c_3)
+
+    bigM = N_1 * N_2 * N_3
+
+    m1 = bigM // N_1
+    m2 = bigM // N_2
+    m3 = bigM // N_3
+
+    y1 = Decimal(pow(m1, -1, N_1))
+    y2 = Decimal(pow(m2, -1, N_2))
+    y3 = Decimal(pow(m3, -1, N_3))
+
+    product = (c_1*Decimal(m1)*y1) + (c_2*Decimal(m2)*y2) + (c_3*Decimal(m3)*y3)
+    #x = c^3 mod n
+    x = product % Decimal(bigM)
+    #x = Decimal(x)
+    m = x ** (Decimal(1)/Decimal(3))
+    #m = cube root of x
+
+    return int(m)
 
 def rsa_parity_oracle_attack(c: int, N: int, e: int, oracle: typing.Callable[[int], bool]) -> str:
     # TODO: Write the necessary code to get the plaintext message from the cipher (c) using
