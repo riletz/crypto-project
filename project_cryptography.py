@@ -138,7 +138,7 @@ def rsa_broadcast_attack(N_1: int, c_1: int, N_2: int, c_2: int, N_3: int, c_3: 
     #https://www.geeksforgeeks.org/maths/chinese-remainder-theorem/
     m = 0
 
-    getcontext().prec = 1000 
+    getcontext().prec = 2000 
 
     c_1 = Decimal(c_1)
     c_2 = Decimal(c_2)
@@ -161,7 +161,7 @@ def rsa_broadcast_attack(N_1: int, c_1: int, N_2: int, c_2: int, N_3: int, c_3: 
     m = x ** (Decimal(1)/Decimal(3))
     #m = cube root of x
 
-    return int(m)
+    return int(round(m))
 
 def rsa_parity_oracle_attack(c: int, N: int, e: int, oracle: typing.Callable[[int], bool]) -> str:
     # TODO: Write the necessary code to get the plaintext message from the cipher (c) using
@@ -169,6 +169,23 @@ def rsa_parity_oracle_attack(c: int, N: int, e: int, oracle: typing.Callable[[in
     # the parity of the decrypted value of a chosen cipher (chosen_c) value using the hidden private key (d)
 
     m_int = 42
+    #https://cryptopals.com/sets/6/challenges/46
+    
+    getcontext().prec = 2000 
+    upper = Decimal(N)
+    lower = Decimal(0)
+    double = c
+    two = Decimal(2)
+    for x in range(N.bit_length()):
+        
+        double = double * pow(2, e, N)
+
+        if oracle(double) == True:
+            upper = (lower+upper) / two  
+        else:
+            lower = (lower+upper) / two
+
+    m_int = int(upper)
 
     # Transform the integer value of the message into a human readable form
     message = bytes.fromhex(hex(int(m_int)).rstrip('L')[2:]).decode('utf-8')
